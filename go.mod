@@ -1,4 +1,4 @@
-module github.com/mogztter/libasciidoc-tck
+module github.com/mogztter/libasciidoc-tck/v2
 
 go 1.18
 
