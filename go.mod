@@ -1,8 +1,11 @@
-module github.com/mogztter/libasciidoc-tck/v2
+module github.com/mogztter/libasciidoc-tck
 
 go 1.18
 
-require github.com/bytesparadise/libasciidoc v0.8.0
+require (
+	github.com/bytesparadise/libasciidoc v0.8.0
+	github.com/mogztter/libasciidoc-tck/v2 v2.0.0-20221120141320-b54478985875
+)
 
 require (
 	github.com/alecthomas/chroma/v2 v2.3.0 // indirect
