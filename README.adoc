@@ -1,0 +1,26 @@
+= Libasciidoc TCK
+:url-asciidoc-tck-repo: https://gitlab.eclipse.org/eclipse/asciidoc-lang/asciidoc-tck
+:url-pkg-targets: https://github.com/vercel/pkg#targets
+
+A CLI to pass the https://gitlab.eclipse.org/eclipse/asciidoc-lang/asciidoc-tck[AsciiDoc TCK]
+
+== Build
+
+ $ go build
+
+== Usage
+
+In order to run Libasciidoc against the AsciiDoc TCK, you will need to build the AsciiDoc TCK from the source to produce an executable.
+
+NOTE: In the future, prebuilt binaries of `asciidoc-tck` will be available.
+
+. Clone https://gitlab.eclipse.org/eclipse/asciidoc-lang/asciidoc-tck
+. Make sure you have Node 18 installed
+. Install the dependencies using `npm i`
+. Build the project using `npm run build`
+. Create an executable for your OS using `npx pkg -t macos .`. This command will build an executable for macOS. Other {url-pkg-targets}[targets] are available.
+. If all went well, you should have an executable in the `dist` repository.
+
+Now, we have all we need to pass the TCK! Let's run it:
+
+ $ ASCIIDOC_TCK_ADAPTER=/path/to/libasciidoc-tck /path/to/asciidoc-tck
