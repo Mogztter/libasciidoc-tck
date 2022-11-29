@@ -8,6 +8,7 @@ import (
 	"github.com/bytesparadise/libasciidoc/pkg/types"
 	"github.com/mogztter/libasciidoc-tck/pkg"
 	"os"
+	"strings"
 )
 
 type AbstractSemanticGraph types.Document
@@ -15,11 +16,24 @@ type Paragraph types.Paragraph
 
 func (p Paragraph) MarshalJSON() ([]byte, error) {
 	m := make(map[string]interface{})
-	elements := p.Elements
-	if s, ok := elements[0].(*types.StringElement); ok {
-		m["type"] = "Paragraph"
-		m["lines"] = []string{s.Content}
+	var line string
+	var contiguousStringElement = false
+	for _, element := range p.Elements {
+		if symbol, isSymbol := element.(*types.Symbol); isSymbol {
+			line = line + symbol.Name
+			contiguousStringElement = false
+		}
+		if str, isStringElement := element.(*types.StringElement); isStringElement {
+			separator := ""
+			if contiguousStringElement {
+				separator = " "
+			}
+			line = line + separator + str.Content
+			contiguousStringElement = true
+		}
 	}
+	m["type"] = "Paragraph"
+	m["lines"] = []string{ strings.ReplaceAll(line, "\n", " ")}
 	return json.Marshal(m)
 }
 
@@ -45,7 +59,6 @@ func (p AbstractSemanticGraph) MarshalJSON() ([]byte, error) {
 
 func main() {
 	input := bufio.NewReader(os.Stdin)
-	//output := bufio.NewWriter(os.Stdout)
 	doc, _ := pkg.Parse(input, configuration.NewConfiguration(configuration.WithHeaderFooter(true)))
 	asg := AbstractSemanticGraph{
 		Elements:          doc.Elements,
